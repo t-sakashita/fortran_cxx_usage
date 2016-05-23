@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 
 template <class T>
 T quadratic(T x) {
@@ -6,7 +7,7 @@ T quadratic(T x) {
 }
 
 int main() {
-  std::cout << "int: " << quadratic<int>(2) << std::endl; // 整数型
-  std::cout << "float: " << quadratic<float> (2.0) << std::endl;  // 単精度
-  std::cout << "double: " << quadratic<double> (2.0) << std::endl; // 倍精度
+  cout << "int: " << quadratic<int>(2) << endl; // 整数型
+  cout << "float: " << quadratic<float> (2.0) << endl;  // 単精度
+  cout << "double: " << quadratic<double> (2.0) << endl; // 倍精度
 }
