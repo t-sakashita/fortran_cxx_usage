@@ -29,12 +29,13 @@ contains
     end interface
     integer :: i, n
     real(8), intent(in) :: x_min, x_max
-    real(8) :: x, dx, s
+    real(8) :: x, x2, dx, s
     dx = (x_max - x_min) / n
     s = 0.d0
     do i=0, n-1
        x = x_min + i * dx
-       s = s + 0.5d0 * (f(x) + f(x+dx))
+       x2 = x_min + (i+1) * dx
+       s = s + 0.5d0 * (f(x) + f(x2))
     enddo
     integrate = s * dx
   end function integrate
