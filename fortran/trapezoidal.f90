@@ -1,13 +1,15 @@
 ! trapezoidal.f90
-real(8) function quadratic(x)
-  implicit none
-  real(8), intent(in) :: x
-  quadratic = 3.d0 * x**2 + 1.d0
-end function quadratic
+module function_mod
+contains
+  real(8) function quadratic(x)
+    implicit none
+    real(8), intent(in) :: x
+    quadratic = 3.d0 * x**2 + 1.d0
+  end function quadratic
+end module function_mod
 
 module integrate_mod
 contains
-
   real(8) function integrate(f, x_min, x_max)
     implicit none
     interface
@@ -34,13 +36,9 @@ contains
 end module integrate_mod
 
 program main
+  use function_mod
   use integrate_mod
   implicit none
-  interface
-     real(8) function quadratic(x)
-       real(8), intent(in) :: x
-     end function quadratic
-  end interface
   
   print *,integrate(quadratic, 0.d0, 1.d0)
 end program main
