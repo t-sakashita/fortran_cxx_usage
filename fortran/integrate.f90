@@ -2,8 +2,6 @@
 module user_func_mod
   implicit none
   real(8), private :: a, b
-  public
-
 contains 
   subroutine user_func_initialize(a_in, b_in)
     implicit none
