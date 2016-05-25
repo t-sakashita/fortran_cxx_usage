@@ -1,45 +1,50 @@
 #include <iostream>
 using namespace std;
 
+// テンプレートIFの宣言
 template <bool Cond, class Then, class Else>
 class IF;
 
+// テンプレートIFの部分特殊化：Cond=trueの場合。他のテンプレートパラメータThenとElseはそのまま渡される。
 template <class Then,class Else>
 class IF<true,Then,Else> {
 public:
-  typedef Then ret;
+  typedef Then ret; // Thenをtypeと定義する。
 };
 
+// テンプレートIFの部分特殊化：Cond=falseの場合。他のテンプレートパラメータThenとElseはそのまま渡される。
 template <class Then,class Else>
 class IF<false,Then,Else> {
 public:
-  typedef Else ret;
+  typedef Else ret; // Elseをtypeと定義する。
 };
 
-class A {	// クラスAで定義されているもの
+// クラスAの定義
+class A {
 public:
   static const int val = 10;
-  static void statFunc() { cout << "A...." << endl; }
-  void func(){ cout << "A!" << endl; }	//インスタンス化して利用できるinlineメンバ関数
+  static void stat_func() { cout << "A's stat_func is called!" << endl; }
+  void func(){ cout << "A's func is called!" << endl; }
 };
 
-class B {	// クラスBで定義されているもの
+// クラスBの定義
+class B {
 public:
   static const int val = 20;
-  static void statFunc() { cout << "B...." << endl; }
-  void func() { cout << "B!" << endl; }	//インスタンス化して利用できるinlineメンバ関数
+  static void stat_func() { cout << "B's stat_func is called!" << endl; }
+  void func() { cout << "B's func is called!" << endl; }
 };
 
 int main() {
-  //条件分岐の対象クラスをA,Bに設定して、テンプレート引数にtrueを入れた場合
+  // テンプレート引数Condにtrueを入れた場合
   std::cout << IF<true,A,B>::ret::val << std::endl;
-  IF<true,A,B>::ret::statFunc();			
+  IF<true,A,B>::ret::stat_func();			
   IF<true,A,B>::ret Obj;
   Obj.func();
 
-  //条件分岐の対象クラスをA,Bに設定して、テンプレート引数にfalseを入れた場合
-  std::cout << IF<true,A,B>::ret::val << std::endl;
-  IF<true,A,B>::ret::statFunc();			
-  IF<true,A,B>::ret Obj2;
+  // テンプレート引数Condにfalseを代入する場合。
+  std::cout << IF<false,A,B>::ret::val << std::endl;
+  IF<false,A,B>::ret::stat_func();			
+  IF<false,A,B>::ret Obj2;
   Obj2.func();
 }
