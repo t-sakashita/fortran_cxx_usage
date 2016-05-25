@@ -1,28 +1,16 @@
 #include <iostream>
 #include <cmath>
 
-class functor {
-public:
-  virtual double operator()(double x) const = 0;
-};
-
-class quadratic : public functor {
+class quadratic {
 public:
   double operator() (double x) const {
     return 3 * x * x + 2;
   }
 };
 
-class cosine : public functor {
+class user_functor {
 public:
-  double operator() (double x) const {
-    return std::cos(x);
-  }
-};
-
-class user_func {
-public:
-  user_func(double a_in, double b_in) : a(a_in), b(b_in) {}
+  user_functor(double a_in, double b_in) : a(a_in), b(b_in) {}
   
   double operator() (double x) const {
     return a * cos(x) + log(b*x);
@@ -45,7 +33,7 @@ double integrate(F f, double x_min, double x_max, int n, bool verbose) {
 }
 
 int main() {
-  integrate(user_func(1.0, 2.0), 0., 1., 20000, true);
+  integrate(user_functor(1.0, 2.0), 0., 1., 20000, true);
 
-  integrate(cosine(), 0., 1., 20000, true);
+  integrate(quadratic(), 0., 1., 20000, true);
 }
