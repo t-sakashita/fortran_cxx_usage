@@ -3,12 +3,15 @@
 using namespace std;
 
 template<int N>
-struct factorial {
+class factorial {
+public:
   static const int value = N * factorial<N-1>::value;
 };
 
+// N=0の場合のテンプレート特殊化
 template<>
-struct factorial<0> {
+class factorial<0> {
+public:
   static const int value = 1;
 };
 

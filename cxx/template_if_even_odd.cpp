@@ -1,40 +1,49 @@
 #include <iostream>
 using namespace std;
 
+// テンプレートIFの宣言
 template <bool Cond, class Then, class Else>
-struct IF;
+class IF;
 
+// テンプレートIFの部分特殊化：Cond=trueの場合。他のテンプレートパラメータThenとElseはそのまま渡される。
 template <class Then,class Else>
-struct IF<true,Then,Else>{
+class IF<true,Then,Else>{
+public:
   typedef Then type; // Thenをtypeと定義する。
 };
 
+// テンプレートIFの部分特殊化：Cond=falseの場合。他のテンプレートパラメータThenとElseはそのまま渡される。
 template <class Then,class Else>
-struct IF<false,Then,Else>{
+class IF<false,Then,Else>{
+public:
   typedef Else type; // Elseをtypeと定義する。
 };
 
 // テンプレート引数で整数Nに対して、Nが偶数（奇数）だったら、スタティック変数valueにtrue(false)が設定される。
 template <int N>
-struct is_even {
+class is_even {
+public:
   static const bool value = (N % 2 == 0);
 };
 
 // テンプレート引数で整数Nに対して、Nが奇数（偶数）だったら、スタティック変数valueにtrue(false)が設定される。
 template <int N>
-struct is_odd {
+class is_odd {
+public:
   static const bool value = !is_even<N>::value;
 };
 
 // クラスAの定義
-struct A {
+class A {
+public:
   static const int val = 10;
   static void stat_func() { cout << "A's stat_func is called!" << endl; }
   void func(){ cout << "A's func is called!" << endl; }
 };
 
 // クラスBの定義
-struct B {
+class B {
+public:
   static const int val = 20;
   static void stat_func() { cout << "B's stat_func is called!" << endl; }
   void func() { cout << "B's func is called!" << endl; }
