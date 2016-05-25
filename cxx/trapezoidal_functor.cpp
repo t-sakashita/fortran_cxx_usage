@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+using namespace std;
 
 class quadratic {
 public:
@@ -27,7 +28,7 @@ double integrate(F f, double x_min, double x_max, int n, bool verbose) {
     double x = x_min + i * h;
     double x2 = x_min + (i+1) * h;
     sum += 0.5 * (f(x) + f(x2));
-    if (verbose) std::cout << "x=" << x << " partial_sum=" << sum * h << std::endl;
+    if (verbose) cout << "x=" << x << " partial_sum=" << sum * h << std::endl;
   }
   return sum * h;
 }
