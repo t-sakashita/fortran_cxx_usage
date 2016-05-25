@@ -7,7 +7,7 @@ T quadratic(T x) {
 }
 
 int main() {
-  cout << "int: " << quadratic<int>(2) << endl; // 整数型
-  cout << "float: " << quadratic<float> (2.0) << endl;  // 単精度
-  cout << "double: " << quadratic<double> (2.0) << endl; // 倍精度
+  cout << "int: " << quadratic(2) << endl; // 整数型
+  cout << "float: " << quadratic(2.0) << endl;  // 単精度
+  cout << "double: " << quadratic((double)2.0) << endl; // 倍精度
 }
