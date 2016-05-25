@@ -14,7 +14,7 @@ public:
   user_functor(double a_in, double b_in) : a(a_in), b(b_in) {}
   
   double operator() (double x) const {
-    return a * cos(x) + log(b*x);
+    return a * cos(x) + log(x+b);
   }
 private:
   double a, b;

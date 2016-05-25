@@ -15,7 +15,7 @@ contains
   
   real(8) function user_func(x)
     real(8), intent(in) :: x
-    user_func = a * cos(x) + log(b*x)
+    user_func = a * cos(x) + log(x+b)
   end function user_func
   
 end module user_func_mod
