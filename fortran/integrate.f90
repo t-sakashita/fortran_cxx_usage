@@ -25,8 +25,9 @@ contains
          real(8), intent(in) :: x
        end function f
     end interface
-    integer :: i, n
     real(8), intent(in) :: x_min, x_max
+    integer, intent(in) :: n
+    integer :: i
     real(8) :: x, x2, dx, s
     dx = (x_max - x_min) / n
     s = 0.d0
