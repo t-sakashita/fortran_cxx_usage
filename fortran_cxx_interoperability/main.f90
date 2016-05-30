@@ -1,8 +1,7 @@
 
 module user_functor_mod
-  use, intrinsic :: iso_c_binding, only: c_int, c_double, c_ptr, c_null_ptr
+  use, intrinsic :: iso_c_binding, only: c_int, c_ptr, c_null_ptr
   implicit none
-!  private
   type user_functor_type
     private
     type(c_ptr) :: object = c_null_ptr
@@ -33,7 +32,7 @@ module user_functor_mod
   interface eval
     module procedure user_functor_eval
   end interface eval
-!  public :: construct, destruct, eval, user_functor_type
+
 contains
 ! fortran wrapper routines to interface c wrappers
   subroutine user_functor_construct(this,a,b)
