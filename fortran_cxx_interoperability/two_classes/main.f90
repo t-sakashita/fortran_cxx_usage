@@ -1,7 +1,5 @@
 module base_functor_mod
-  use iso_c_binding
   implicit none
-  public
   type, abstract :: base_functor_type
    contains
      procedure(base_functor_eval), deferred, pass(this) :: eval
@@ -85,23 +83,17 @@ contains
     real(8), intent(out) :: res
 
     integer :: i
-    real(8) :: x
-    real(8) :: deltax
-
-    if (steps <= 0) then
-       res = 0.0
-       return
-    endif
-
-    deltax = (xmax - xmin) / steps
+    real(8) :: x, dx
+    
+    dx = (xmax - xmin) / steps
     res = (this%eval(xmin) + this%eval(xmax)) / 2
 
     do i = 2, steps
-       x = xmin + (i-1) * deltax
+       x = xmin + (i-1) * dx
        res = res + this%eval(x)
     enddo
     
-    res = res * deltax
+    res = res * dx
   end subroutine integrate_trapezoid
 end module integration_mod
 
