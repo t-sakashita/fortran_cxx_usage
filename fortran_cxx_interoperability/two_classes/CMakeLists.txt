@@ -13,8 +13,8 @@ if(USE_CXX_LINKER)
 endif(USE_CXX_LINKER)
 
 set(TARGET_NAME functor)
-add_executable(${TARGET_NAME} wrapper.cpp base_fuctor.f90 user_functor1_wrapper.f90 user_functor2_wrapper.f90 main.f90)
-#set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${name})
+add_executable(${TARGET_NAME} user_functor1_wrapper.cpp user_functor2_wrapper.cpp base_fuctor.f90 user_functor1_wrapper.f90 user_functor2_wrapper.f90 main.f90)
+
 if(USE_CXX_LINKER)
   SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 endif(USE_CXX_LINKER)
