@@ -2,24 +2,21 @@ module function
   use iso_c_binding
   implicit none
   public
-  type, abstract :: user_functor_type
+  type, abstract :: base_functor_type
      type(c_ptr) :: ptr
    contains
      procedure(function_evaluation), deferred, pass(this) :: eval
-  end type user_functor_type
+  end type base_functor_type
 
   abstract interface
      real(8) function function_evaluation(this, x)
-       import :: user_functor_type
-       class(user_functor_type), intent(in) :: this
+       import :: base_functor_type
+       class(base_functor_type), intent(in) :: this
        real(8), value, intent(in) :: x
      end function function_evaluation
   end interface
   
-  type, extends(user_functor_type) :: my_functor_type
-     !     type(c_ptr) :: ptr
-     !     real :: a
-     !     real :: b
+  type, extends(base_functor_type) :: my_functor_type
    contains
      procedure, pass(this) :: eval => user_functor_eval
   end type my_functor_type
@@ -50,6 +47,7 @@ contains
     real(8), intent(in) :: a, b
     this%ptr = user_functor_construct_c(a,b)
   end subroutine user_functor_construct
+  
   subroutine user_functor_destruct(this)
     type(my_functor_type), intent(inout) :: this
     call user_functor_destruct_c(this%ptr)
@@ -74,7 +72,7 @@ module integration_library
 contains
 
   subroutine integrate_trapezoid(this, xmin, xmax, steps, res)
-    class(user_functor_type) :: this
+    class(base_functor_type) :: this
     real(8), intent(in) :: xmin, xmax
     integer, intent(in) :: steps
     real(8), intent(out) :: res
@@ -106,7 +104,7 @@ program test_integrate
   use function
 
   implicit none
-  type(my_functor_type) :: this
+  type(my_functor_type) :: this, that
 
   real(8) :: xmin, xmax, result
   integer :: steps
@@ -117,6 +115,8 @@ program test_integrate
 
   call integrate_trapezoid(this, xmin, xmax, steps, result)
   write(*,*) 'Result: ', result
-  
+
+  call integrate_trapezoid(that, xmin, xmax, steps, result)
+  write(*,*) 'Result: ', result
 end program test_integrate
 
