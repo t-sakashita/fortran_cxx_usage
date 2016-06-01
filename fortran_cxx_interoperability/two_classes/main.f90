@@ -72,8 +72,8 @@ contains
 end module my_functor1_mod
 
 
-module integration_library
-  use my_functor1_mod
+module integration_mod
+  use base_functor_mod
   implicit none
 
 contains
@@ -103,14 +103,14 @@ contains
     
     res = res * deltax
   end subroutine integrate_trapezoid
-end module integration_library
+end module integration_mod
 
 
 program test_integrate
-  use integration_library
-  use function
-
+  use integration_mod
+  use my_functor1_mod
   implicit none
+
   type(my_functor_type1) :: this, that
 
   real(8) :: xmin, xmax, result
