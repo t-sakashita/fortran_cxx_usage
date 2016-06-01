@@ -5,15 +5,15 @@ module function
   type, abstract :: base_functor_type
      type(c_ptr) :: ptr
    contains
-     procedure(function_evaluation), deferred, pass(this) :: eval
+     procedure(base_functor_eval), deferred, pass(this) :: eval
   end type base_functor_type
 
   abstract interface
-     real(8) function function_evaluation(this, x)
+     real(8) function base_functor_eval(this, x)
        import :: base_functor_type
        class(base_functor_type), intent(in) :: this
        real(8), value, intent(in) :: x
-     end function function_evaluation
+     end function base_functor_eval
   end interface
   
   type, extends(base_functor_type) :: my_functor_type
