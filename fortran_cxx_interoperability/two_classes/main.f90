@@ -3,7 +3,6 @@ module base_functor_mod
   implicit none
   public
   type, abstract :: base_functor_type
-     type(c_ptr) :: ptr
    contains
      procedure(base_functor_eval), deferred, pass(this) :: eval
   end type base_functor_type
@@ -24,6 +23,7 @@ module my_functor1_mod
   use iso_c_binding
   implicit none
   type, extends(base_functor_type) :: my_functor_type1
+     type(c_ptr) :: ptr
    contains
      procedure, pass(this) :: eval => user_functor_eval
   end type my_functor_type1
