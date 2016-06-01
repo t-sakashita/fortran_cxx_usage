@@ -1,4 +1,4 @@
-module function
+module base_functor_mod
   use iso_c_binding
   implicit none
   public
@@ -15,11 +15,18 @@ module function
        real(8), value, intent(in) :: x
      end function base_functor_eval
   end interface
-  
-  type, extends(base_functor_type) :: my_functor_type
+
+end module base_functor_mod
+
+
+module my_functor1_mod
+  use base_functor_mod
+  use iso_c_binding
+  implicit none
+  type, extends(base_functor_type) :: my_functor_type1
    contains
      procedure, pass(this) :: eval => user_functor_eval
-  end type my_functor_type
+  end type my_functor_type1
 
   interface
      function user_functor_construct_c (a, b) result(ptr) bind(c,name="user_functor_construct")
@@ -43,30 +50,30 @@ module function
 contains
 
   subroutine user_functor_construct(this,a,b)
-    type(my_functor_type), intent(out) :: this
+    type(my_functor_type1), intent(out) :: this
     real(8), intent(in) :: a, b
     this%ptr = user_functor_construct_c(a,b)
   end subroutine user_functor_construct
   
   subroutine user_functor_destruct(this)
-    type(my_functor_type), intent(inout) :: this
+    type(my_functor_type1), intent(inout) :: this
     call user_functor_destruct_c(this%ptr)
     this%ptr = c_null_ptr
   end subroutine user_functor_destruct
   
   function user_functor_eval(this,x) result(y)
-    class(my_functor_type), intent(in) :: this
+    class(my_functor_type1), intent(in) :: this
     real(8), value, intent(in) :: x
     real(8) :: y
     print *,"x0=", x
     y = user_functor_eval_c(this%ptr, x)
   end function user_functor_eval
   
-end module function
+end module my_functor1_mod
 
 
 module integration_library
-  use function
+  use my_functor1_mod
   implicit none
 
 contains
@@ -104,7 +111,7 @@ program test_integrate
   use function
 
   implicit none
-  type(my_functor_type) :: this, that
+  type(my_functor_type1) :: this, that
 
   real(8) :: xmin, xmax, result
   integer :: steps
