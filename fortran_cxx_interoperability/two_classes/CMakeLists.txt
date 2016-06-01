@@ -13,7 +13,7 @@ if(USE_CXX_LINKER)
 endif(USE_CXX_LINKER)
 
 set(TARGET_NAME functor)
-add_executable(${TARGET_NAME} fortran_functor.f90 user_functor1_wrapper.cpp user_functor2_wrapper.cpp base_functor.f90 user_functor1_wrapper.f90 user_functor2_wrapper.f90 main.f90)
+add_executable(${TARGET_NAME} integration.f90 fortran_functor.f90 user_functor1_wrapper.cpp user_functor2_wrapper.cpp base_functor.f90 user_functor1_wrapper.f90 user_functor2_wrapper.f90 main.f90)
 
 if(USE_CXX_LINKER)
   SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINKER_LANGUAGE CXX)
