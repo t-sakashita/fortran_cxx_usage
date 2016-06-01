@@ -1,9 +1,9 @@
-module integration_library
+module function
   use iso_c_binding
   implicit none
   public
   type, abstract :: user_functor_type
-     type(c_ptr) :: object
+     type(c_ptr) :: ptr
    contains
      procedure(function_evaluation), deferred, pass(this) :: eval
   end type user_functor_type
@@ -15,43 +15,9 @@ module integration_library
        real(8), value, intent(in) :: x
      end function function_evaluation
   end interface
-
-contains
-
-  subroutine integrate_trapezoid(this, xmin, xmax, steps, res)
-    class(user_functor_type) :: this
-    real(8), intent(in) :: xmin, xmax
-    integer, intent(in) :: steps
-    real(8), intent(out) :: res
-
-    integer :: i
-    real(8) :: x
-    real(8) :: deltax
-
-    if (steps <= 0) then
-       res = 0.0
-       return
-    endif
-
-    deltax = (xmax - xmin) / steps
-    res = (this%eval(xmin) + this%eval(xmax)) / 2
-
-    do i = 2, steps
-       x = xmin + (i-1) * deltax
-       res = res + this%eval(x)
-    enddo
-    
-    res = res * deltax
-  end subroutine integrate_trapezoid
-end module integration_library
-
-module function
-  use integration_library
-  use iso_c_binding
-  implicit none
-
+  
   type, extends(user_functor_type) :: my_functor_type
-     !     type(c_ptr) :: object
+     !     type(c_ptr) :: ptr
      !     real :: a
      !     real :: b
    contains
@@ -82,12 +48,12 @@ contains
   subroutine user_functor_construct(this,a,b)
     type(my_functor_type), intent(out) :: this
     real(8), intent(in) :: a, b
-    this%object = user_functor_construct_c(a,b)
+    this%ptr = user_functor_construct_c(a,b)
   end subroutine user_functor_construct
   subroutine user_functor_destruct(this)
     type(my_functor_type), intent(inout) :: this
-    call user_functor_destruct_c(this%object)
-    this%object = c_null_ptr
+    call user_functor_destruct_c(this%ptr)
+    this%ptr = c_null_ptr
   end subroutine user_functor_destruct
   
   function user_functor_eval(this,x) result(y)
@@ -95,10 +61,44 @@ contains
     real(8), value, intent(in) :: x
     real(8) :: y
     print *,"x0=", x
-    y = user_functor_eval_c(this%object, x)
+    y = user_functor_eval_c(this%ptr, x)
   end function user_functor_eval
   
 end module function
+
+
+module integration_library
+  use function
+  implicit none
+
+contains
+
+  subroutine integrate_trapezoid(this, xmin, xmax, steps, res)
+    class(user_functor_type) :: this
+    real(8), intent(in) :: xmin, xmax
+    integer, intent(in) :: steps
+    real(8), intent(out) :: res
+
+    integer :: i
+    real(8) :: x
+    real(8) :: deltax
+
+    if (steps <= 0) then
+       res = 0.0
+       return
+    endif
+
+    deltax = (xmax - xmin) / steps
+    res = (this%eval(xmin) + this%eval(xmax)) / 2
+
+    do i = 2, steps
+       x = xmin + (i-1) * deltax
+       res = res + this%eval(x)
+    enddo
+    
+    res = res * deltax
+  end subroutine integrate_trapezoid
+end module integration_library
 
 
 program test_integrate
