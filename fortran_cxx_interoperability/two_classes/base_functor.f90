@@ -9,7 +9,7 @@ module base_functor_mod
      real(8) function base_functor_eval(this, x)
        import :: base_functor_type
        class(base_functor_type), intent(in) :: this
-       real(8), value, intent(in) :: x
+       real(8), intent(in) :: x
      end function base_functor_eval
   end interface
 

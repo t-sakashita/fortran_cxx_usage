@@ -19,7 +19,7 @@ module fortran_functor_mod
 contains
   real(8) function f(this, x)
     class(fortran_functor_type), intent(in) :: this
-    real(8), value, intent(in) :: x
+    real(8), intent(in) :: x
     print *, "This is f"
     f = exp(-this%a*x) * cos(this%b*x)
   end function f

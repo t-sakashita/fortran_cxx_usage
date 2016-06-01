@@ -51,7 +51,7 @@ contains
   
   function user_functor1_eval(this,x) result(y)
     class(user_functor1_type), intent(in) :: this
-    real(8), value, intent(in) :: x
+    real(8), intent(in) :: x
     real(8) :: y
     print *,"x0=", x
     y = user_functor1_eval_c(this%ptr, x)
