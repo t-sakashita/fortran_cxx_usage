@@ -91,17 +91,17 @@ contains
     end interface
     integer :: i, n
     real(8), intent(in) :: x_min, x_max
-    real(8) :: h, s
-    real(8) :: x
+    real(8) :: x, x2, dx, s
     n = 20000
-    h = (x_max - x_min) / n
+    dx = (x_max - x_min) / n
     s = 0.d0
     do i=0, n-1
-       x = x_min + i * h
-       s = s + 0.5d0 * (f(x) + f(x+h))
-       print *, "i=",i," partial_sum=", s * h
+       x = x_min + i * dx
+       x2 = x_min + (i+1) * dx
+       s = s + 0.5d0 * (f(x) + f(x2))
+       print *, "i=",i," partial_sum=", s * dx
     enddo
-    integrate = s * h
+    integrate = s * dx
   end function integrate
   
 end module integrate_mod
@@ -109,7 +109,6 @@ end module integrate_mod
 
 program main
   use user_functor_mod
-  use user_func_mod_orig
   use integrate_mod
   implicit none
   real(8) :: s
@@ -117,8 +116,9 @@ program main
 
   call user_functor_construct(t, 1d0, 2d0)
   print *, user_functor_eval(t, 23.d0)
-  !  s = integrate(user_func_eval, 1.d0, 2.d0)
-  !  print *, "s=", s
+!  print *, t%user_functor_eval(23.d0)
+  !s = integrate(user_functor_eval, 1.d0, 2.d0)
+  !print *, "s=", s
   call user_functor_destruct(t)
 end program main
 
