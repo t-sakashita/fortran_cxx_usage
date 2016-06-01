@@ -34,16 +34,24 @@ module my_functor1_mod
     end function user_functor_construct_c
     subroutine user_functor_destruct_c (ptr) bind(c,name="user_functor_destruct")
       import
-      type(c_ptr), value :: ptr
+      type(c_ptr), value, intent(in) :: ptr
     end subroutine user_functor_destruct_c    
     function user_functor_eval_c (ptr, x) result(y) bind(c,name="user_functor_eval")
       use iso_c_binding
       import
-      type(c_ptr), intent(in) :: ptr
+      type(c_ptr), value, intent(in) :: ptr
       real(8), value, intent(in) :: x
       real(8) :: y
     end function user_functor_eval_c
  end interface
+
+ interface construct
+    module procedure user_functor_construct
+ end interface construct
+ 
+  interface destruct
+    module procedure user_functor_destruct
+ end interface destruct
  
 contains
 
@@ -105,17 +113,22 @@ program test_integrate
 
   type(my_functor_type1) :: this, that
 
-  real(8) :: xmin, xmax, result
-  integer :: steps
+  real(8) :: xmin, xmax, s
+  integer :: n
 
   xmin = 1.d0
   xmax = 10.d0
-  steps = 10.d0
+  n = 10
+  
+  call construct(this, 0.d0, 5.d0)
+  call integrate_trapezoid(this, xmin, xmax, n, s)
+  write(*,*) 'Result: ', s
+  call destruct(this)
 
-  call integrate_trapezoid(this, xmin, xmax, steps, result)
-  write(*,*) 'Result: ', result
+  call construct(that, 1.d0, 10.d0)
+  call integrate_trapezoid(that, xmin, xmax, n, s)
+  write(*,*) 'Result: ', s
+  call destruct(that)
 
-  call integrate_trapezoid(that, xmin, xmax, steps, result)
-  write(*,*) 'Result: ', result
 end program test_integrate
 
