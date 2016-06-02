@@ -5,7 +5,7 @@ program main
   use fortran_functor_mod
   implicit none
 
-  type(user_functor1_type) :: this, that
+  type(user_functor1_type) :: this1
   type(user_functor2_type) :: this2
   type(fortran_functor_type) :: this3
 
@@ -16,15 +16,10 @@ program main
   xmax = 10.d0
   n = 10
   
-  call construct(this, 0.d0, 5.d0)
-  call integrate_trapezoid(this, xmin, xmax, n, s)
+  call construct(this1, 0.d0, 5.d0)
+  call integrate_trapezoid(this1, xmin, xmax, n, s)
   write(*,*) 'Result: ', s
-  call destruct(this)
-
-  call construct(that, 1.d0, 10.d0)
-  call integrate_trapezoid(that, xmin, xmax, n, s)
-  write(*,*) 'Result: ', s
-  call destruct(that)
+  call destruct(this1)
 
   call construct(this2, 3)
   call integrate_trapezoid(this2, xmin, xmax, n, s)
