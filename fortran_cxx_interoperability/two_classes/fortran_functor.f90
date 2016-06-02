@@ -9,12 +9,12 @@ module fortran_functor_mod
   end type fortran_functor_type
 
   interface construct
-    module procedure fortran_functor_construct
- end interface construct
- 
+     module procedure fortran_functor_construct
+  end interface construct
+  
   interface destruct
-    module procedure fortran_functor_destruct
- end interface destruct
+     module procedure fortran_functor_destruct
+  end interface destruct
  
 contains
   real(8) function f(this, x)

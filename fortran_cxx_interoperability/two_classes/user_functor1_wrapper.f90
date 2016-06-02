@@ -31,7 +31,7 @@ module user_functor1_mod
     module procedure user_functor1_construct
  end interface construct
  
-  interface destruct
+ interface destruct
     module procedure user_functor1_destruct
  end interface destruct
  

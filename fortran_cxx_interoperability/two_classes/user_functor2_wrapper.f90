@@ -31,12 +31,12 @@ module user_functor2_mod
     module procedure user_functor2_construct
  end interface construct
  
-  interface destruct
+ interface destruct
     module procedure user_functor2_destruct
  end interface destruct
  
 contains
-
+  
   subroutine user_functor2_construct(this,m)
     type(user_functor2_type), intent(out) :: this
     integer, intent(in) :: m
